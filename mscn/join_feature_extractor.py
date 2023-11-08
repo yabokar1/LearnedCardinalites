@@ -4,8 +4,8 @@ import sqlparse
 from parse import *
 
 
-QUERIES_MAX_COUNT = 2336
-FILENAME_OUTPUT = "train_job.csv"
+QUERIES_MAX_COUNT = 2337
+FILENAME_OUTPUT = "train_job_1.csv"
 
 
 def feature_extractor(filename):
@@ -40,18 +40,19 @@ def tuple_to_str(tuple):
 def list_to_str(list):
     table_list = []
     list_str = ''
-    print(f"list {list}")
+    # print(f"list {list}")
     for item in list:
         table_list += item.replace("\n", "").split(",")
-    print(f"table_list is {table_list}")
+    # print(f"table_list is {table_list}")
 
     for item in table_list:
         words = item.split()
-        print(f"words {words}")
+        # print(f"words {words}")
         index = table_list.index(item)
         if len(words) == 2:
-            table_list[index] = words[0] + "  " + words[1]
-        if 'AS' in words:
+            table_list[index] = words[0] + " " + words[1]
+            print(words[0] + "  " + words[1])
+        elif 'AS' in words:
             table_list[index] = item.replace("AS", "")
         else:
             table_list[index] = item.replace(" ", "")
@@ -70,16 +71,11 @@ def get_features(query):
 
     table_pattern = r'(?i)FROM\s+([\w, \n]+)(?:\s*(?:AS\s*)?\w*)*(?=\s*WHERE|$)'
     join_pattern = r'\b[A-Za-z]\w*(?:\.[\w\d]+)?\s*=\s*[A-Za-z]\w*(?:\.[\w\d]+)?\b'
-    predicate_pattern = r'\b(\w+)\s*([<>=]=?|=)\s*(?:"([^"]*)"|\'([^\']*)\'|(\d+(?:\.\d+)?|\d+))'
-
+    # predicate_pattern = r'\b(\w+)\s*([<>=]=?|=)\s*(?:"([^"]*)"|\'([^\']*)\'|(\d+(?:\.\d+)?|\d+))'
+    predicate_pattern = r'\b(\w+(?:\.\w+)?)\s*([<>=]=?|=)\s*(?:"([^"]*)"|\'([^\']*)\'|(\d+(?:\.\d+)?|\d+))'
     query = sqlparse.format(query)
-    # print(query)
-    # print(query)
-    
 
- 
-
-    table_names = set(re.findall(table_pattern, query))
+    table_names = list(set(re.findall(table_pattern, query)))
     join_conditions = set(re.findall(join_pattern, query))
     predicates = set(re.findall(predicate_pattern, query))
    
@@ -87,7 +83,6 @@ def get_features(query):
     print(f"join is {join_conditions}")
     print(f" predicate is {predicates}")
 
-    table_names = list(table_names)
 
     predicate_str = tuple_to_str(predicates).replace(" ", "").rstrip(', ')
     join_str = list_to_str(join_conditions)
