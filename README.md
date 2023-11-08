@@ -30,13 +30,21 @@ LearnedWMP usage:
 
 ```python3 join_feature_extractor.py ```
 
-2) Execute feature_extractor.py to perform feature extraction for join and filter operators (working on including sort, tbscan). The script outputs join_train_tpcds.csv and filter_train_tpcds.csv contains the featurized queries for each operator.
 
-```python3 feature_extractor.py ```
+Finally, from 1)  you need to know # of queries to execute train.py. Afterwards you need make an edit in data.py and replace the filepath for the 
+variables ** **file_name_queries** and **file_name_column_min_max_vals**. Lastly, in the train.py, the variable **workload_name** needs to match the dataset type used in **file_name_queries**. 
 
-Finally, either from 1) or 2) you need to know # of queries to execute train.py
+For JOB dataset 
+```python3 train.py --queries 2227 --epochs 5 test_job```
 
-```python3 train.py --queries 4 --epochs 10 (test set)```
+![My Image](images/job_1.png)
+![My Image](images/job_2.png)
+
+For TPCDS dataset 
+```python3 train.py --queries 99 --epochs 10 test_tpcds```
+
+![My Image](images/tpcds_1.png)
+![My Image](images/tpcds_2.png)
 
 
 ## References
