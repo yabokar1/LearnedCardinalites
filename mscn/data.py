@@ -54,8 +54,8 @@ def load_data(file_name, num_materialized_samples):
 def load_and_encode_train_data(num_queries, num_materialized_samples):
     # file_name_queries = "data/train"
     # file_name_column_min_max_vals = "data/column_min_max_vals.csv"
-    file_name_queries = "mscn/train_tpcds"
-    file_name_column_min_max_vals = "data/tpcds_column_min_max_vals.csv"
+    file_name_queries = "mscn/train_job"
+    file_name_column_min_max_vals = "data/job_column_min_max_vals.csv"
 
     joins, predicates, tables, samples, label = load_data(file_name_queries, num_materialized_samples)
 
