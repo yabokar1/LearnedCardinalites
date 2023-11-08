@@ -32,7 +32,7 @@ LearnedWMP usage:
 
 
 Finally, from 1)  you need to know # of queries to execute train.py. Afterwards you need make an edit in data.py and replace the filepath for the 
-variables ** **file_name_queries** and **file_name_column_min_max_vals**. Lastly, in the train.py, the variable **workload_name** needs to match the dataset type used in **file_name_queries**. 
+variables  **file_name_queries** and **file_name_column_min_max_vals**. Lastly, in the train.py, the variable **workload_name** needs to match the dataset type used in **file_name_queries**. 
 
 For JOB dataset 
 ```python3 train.py --queries 2227 --epochs 5 test_job```
