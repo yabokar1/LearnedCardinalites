@@ -22,7 +22,8 @@ def load_data(file_name, num_materialized_samples):
             if int(float(row[3])) < 1:
                 print("Queries must have non-zero cardinalities")
                 exit(1)
-            label.append(row[3])
+            # label.append(row[3])
+            label.append(row[4])
     print("Loaded queries")
 
     # Load bitmaps
@@ -101,6 +102,11 @@ def load_and_encode_train_data(num_queries, num_materialized_samples):
             if i == 0:
                 continue
             # Convert str into float 
+                """
+                # Author:Yonis 
+                    Included if condition to check predicate value is string and
+                    if so convert value into float
+                """
             if type(row[1]) is str and type(row[2]):
                 print(row[1])
                 print(row[2])

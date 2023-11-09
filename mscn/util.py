@@ -90,10 +90,15 @@ def normalize_data(val, column_name, column_min_max_vals):
     # print(f"The min value is {column_min_max_vals[column_name][0]}")
     # print(f"The max value is {column_min_max_vals[column_name][1]}")
 
-    # Updated
+    """
+    # Author:Yonis 
+        Included if condition to check predicate value is string and
+        if so convert value into float
+    """
+
     if isinstance(val, str):
         val = (hash(val)% 1000) 
-        print(f"The val is {val}")
+        # print(f"The val is {val}")
     else:
         val = float(val)
     val_norm = 0.0
