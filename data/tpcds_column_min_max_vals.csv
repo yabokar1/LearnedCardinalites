@@ -1,8 +1,9 @@
 name,min,max,cardinality,num_unique_values
-s_state,1,2528312,2528312,2528312
-ctr1.ctr_total_return,1,7,2528312,6
-ctr1.ctr_store_sk,1880,2019,2528312,133
-d_year,1,2609129,2609129,2609129
-customer.c_birth_day,1,31,,31
-customer.c_birth_month,1,12,,12
-customer.c_birth_year,1924,1992,,69
+d_year,1900,2100,73049,201 
+s_state,AL,TN,400,9
+cd_marital_status,D,W,1920800,5
+hd_dep_count,0,9,7200,10
+cd_education_status,2 yr Degree,Unknown,1920800,7
+ca_country,United States,United States,969903,1
+cs_sales_price,0.00,300.00,143277284,29510
+d_qoy,1,4,73049,4

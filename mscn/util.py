@@ -89,13 +89,13 @@ def normalize_data(val, column_name, column_min_max_vals):
     max_val = column_min_max_vals[column_name][1]
     # print(f"The min value is {column_min_max_vals[column_name][0]}")
     # print(f"The max value is {column_min_max_vals[column_name][1]}")
+
     # Updated
     if isinstance(val, str):
-        val = random.random()
+        val = (hash(val)% 1000) 
+        print(f"The val is {val}")
     else:
         val = float(val)
-    # Updated
-    val = float(val)
     val_norm = 0.0
     if max_val > min_val:
         val_norm = (val - min_val) / (max_val - min_val)

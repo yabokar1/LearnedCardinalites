@@ -1,2 +1,4 @@
 data/job_master_file.csv
 data/tpcds_master_file.csv
+data/tpcds_tablenames.txt
+mscn/train_tpcds_2.csv

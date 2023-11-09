@@ -54,7 +54,7 @@ def load_data(file_name, num_materialized_samples):
 def load_and_encode_train_data(num_queries, num_materialized_samples):
     # file_name_queries = "data/train"
     # file_name_column_min_max_vals = "data/column_min_max_vals.csv"
-    file_name_queries = "data/train_tpcds"
+    file_name_queries = "data/tpcds"
     file_name_column_min_max_vals = "data/tpcds_column_min_max_vals.csv"
 
     joins, predicates, tables, samples, label = load_data(file_name_queries, num_materialized_samples)
@@ -100,8 +100,17 @@ def load_and_encode_train_data(num_queries, num_materialized_samples):
         for i, row in enumerate(data_raw):
             if i == 0:
                 continue
+            # Convert str into float 
+            if type(row[1]) is str and type(row[2]):
+                print(row[1])
+                print(row[2])
+                hash_value_1 = hash(row[1])
+                hash_value_2 = hash(row[2])
+                row[1] = (hash_value_1 % 1000) 
+                row[2] = (hash_value_2 % 1000)
+                # print(f"The row 1 {hash_value_1 } and row 2 {hash_value_2}")
             column_min_max_vals[row[0]] = [float(row[1]), float(row[2])]
-
+    print(f"The column_min_max_val {column_min_max_vals}")
     # Get feature encoding and proper normalization
     samples_enc = encode_samples(tables, samples, table2vec)
     predicates_enc, joins_enc = encode_data(predicates, joins, column_min_max_vals, column2vec, op2vec, join2vec)

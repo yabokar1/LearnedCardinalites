@@ -1,11 +1,12 @@
+import math
 import re
 import pandas as pd
 import sqlparse
 from parse import *
 
 
-QUERIES_MAX_COUNT = 2337
-FILENAME_OUTPUT = "train_job_1.csv"
+QUERIES_MAX_COUNT = 99350
+FILENAME_OUTPUT = "train_tpcds_final.csv"
 
 
 def feature_extractor(filename):
@@ -16,7 +17,7 @@ def feature_extractor(filename):
             break
         actual_mem = data["SORT_SHRHEAP_TOP"]
         est_mem = data["ESTIMATED_SORT_SHRHEAP_TOP"]
-        if actual_mem == "nan" or est_mem == "nan":
+        if math.isnan(actual_mem) or math.isnan(est_mem):
             continue
         query = data["Queries"]
         query = sqlparse.format(query)
@@ -157,5 +158,5 @@ query = """
 
 # get_features(sql_query)
 
-feature_extractor("../data/job_master_file.csv")
+feature_extractor("../data/tpcds_master_file.csv")
 
