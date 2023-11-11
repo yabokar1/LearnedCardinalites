@@ -147,7 +147,7 @@ def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_un
     print("")
 
     # Load test data
-    workload_name = 'test_tpcds'
+    workload_name = 'test_job'
     file_name = "workloads/" + workload_name
     print("The filename is {}".format(file_name))
     joins, predicates, tables, samples, label = load_data(file_name, num_materialized_samples)

@@ -5,18 +5,20 @@ import sqlparse
 from parse import *
 
 
-QUERIES_MAX_COUNT = 99350
-FILENAME_OUTPUT = "train_tpcds_final.csv"
+QUERIES_MAX_COUNT = 85627
+FILENAME_OUTPUT = "train_tpcds_clean_1.csv"
 
 
-def feature_extractor(filename):
+def feature_extractor(filename,start):
     df = pd.read_csv(filename)
-    df_queries = df[["Queries","ESTIMATED_SORT_SHRHEAP_TOP","SORT_SHRHEAP_TOP"]]
+    df_queries = df[["Queries","db2","actual"]]
     for index,data in df_queries.iterrows():
+        if start >= index:
+            continue
         if index >= QUERIES_MAX_COUNT:
             break
-        actual_mem = data["SORT_SHRHEAP_TOP"]
-        est_mem = data["ESTIMATED_SORT_SHRHEAP_TOP"]
+        actual_mem = data["actual"]
+        est_mem = data["db2"]
         if math.isnan(actual_mem) or math.isnan(est_mem):
             continue
         query = data["Queries"]
@@ -158,5 +160,5 @@ query = """
 
 # get_features(sql_query)
 
-feature_extractor("../data/tpcds_master_file.csv")
+feature_extractor("../data/tpcds-clean.csv",5361)
 
