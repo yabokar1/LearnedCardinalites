@@ -4,3 +4,4 @@ data/tpcds_tablenames.txt
 mscn/train_tpcds_2.csv
 mscn/train_tpcds_final.csv
 mscn/train_tpcds_clean.csv
+data/tpcds-clean.csv
