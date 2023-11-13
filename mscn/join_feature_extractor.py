@@ -5,16 +5,16 @@ import sqlparse
 from parse import *
 
 
-QUERIES_MAX_COUNT = 85627
-FILENAME_OUTPUT = "train_tpcds_clean_1.csv"
+QUERIES_MAX_COUNT = 3959
+FILENAME_OUTPUT = "train_tpcc.csv"
 
 
-def feature_extractor(filename,start):
+def feature_extractor(filename):
     df = pd.read_csv(filename)
     df_queries = df[["Queries","db2","actual"]]
     for index,data in df_queries.iterrows():
-        if start >= index:
-            continue
+        # if start >= index:
+        #     continue
         if index >= QUERIES_MAX_COUNT:
             break
         actual_mem = data["actual"]
@@ -54,7 +54,7 @@ def list_to_str(list):
         index = table_list.index(item)
         if len(words) == 2:
             table_list[index] = words[0] + " " + words[1]
-            print(words[0] + "  " + words[1])
+            # print(words[0] + "  " + words[1])
         elif 'AS' in words:
             table_list[index] = item.replace("AS", "")
         else:
@@ -83,7 +83,7 @@ def get_features(query):
     predicates = set(re.findall(predicate_pattern, query))
    
     print(f"table name is {table_names}")
-    print(f"join is {join_conditions}")
+    # print(f"join is {join_conditions}")
     print(f" predicate is {predicates}")
 
 
@@ -93,7 +93,7 @@ def get_features(query):
     table_str = list_to_str(table_names)
    
     query_feature = table_str + "#" + join_str + "#" + predicate_str
-    print(query_feature)
+    # print(query_feature)
 
 
     return query_feature
@@ -160,5 +160,6 @@ query = """
 
 # get_features(sql_query)
 
-feature_extractor("../data/tpcds-clean.csv",5361)
+feature_extractor("../data/tpcc.csv")
 
+# 5397

@@ -1,7 +1,13 @@
 data/job_master_file.csv
 data/tpcds_master_file.csv
 data/tpcds_tablenames.txt
+data/tpcc_master_file.csv
+data/sample.csv
+data/all_tpcds.csv
 mscn/train_tpcds_2.csv
 mscn/train_tpcds_final.csv
 mscn/train_tpcds_clean.csv
 data/tpcds_clean.csv
+mscn/sample_output.csv
+mscn/updated_tpcds.csv
+mscn/train_tpcds_final.csv

@@ -19,7 +19,9 @@ def load_data(file_name, num_materialized_samples):
             tables.append(row[0].split(','))
             joins.append(row[1].split(','))
             predicates.append(row[2].split(','))
-            if int(float(row[3])) < 1:
+            print(f"The data_raw is {row}")
+            print(f"The length is {len(row)}")
+            if int(float(row[4])) < 1:
                 print("Queries must have non-zero cardinalities")
                 exit(1)
             # label.append(row[3])
@@ -55,8 +57,8 @@ def load_data(file_name, num_materialized_samples):
 def load_and_encode_train_data(num_queries, num_materialized_samples):
     # file_name_queries = "data/train"
     # file_name_column_min_max_vals = "data/column_min_max_vals.csv"
-    file_name_queries = "data/train_job"
-    file_name_column_min_max_vals = "data/job_column_min_max_vals.csv"
+    file_name_queries = "data/sample"
+    file_name_column_min_max_vals = "data/tpcds_column_min_max_vals.csv"
 
     joins, predicates, tables, samples, label = load_data(file_name_queries, num_materialized_samples)
 
@@ -107,9 +109,7 @@ def load_and_encode_train_data(num_queries, num_materialized_samples):
                     Included if condition to check predicate value is string and
                     if so convert value into float
                 """
-            if type(row[1]) is str and type(row[2]):
-                print(row[1])
-                print(row[2])
+            if type(row[1]) is str and type(row[2]) is str:
                 hash_value_1 = hash(row[1])
                 hash_value_2 = hash(row[2])
                 row[1] = (hash_value_1 % 1000) 
