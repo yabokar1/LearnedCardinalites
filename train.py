@@ -6,6 +6,7 @@ import torch
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 
+from sklearn.metrics import mean_absolute_percentage_error
 from mscn.util import *
 from mscn.data import get_train_datasets, load_data, make_dataset
 from mscn.model import SetConv
@@ -176,6 +177,8 @@ def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_un
     print("\nQ-Error " + workload_name + ":")
     print_qerror(preds_test_unnorm, label)
 
+    print("MAPE")
+    print(mean_absolute_percentage_error(label, preds_test_unnorm))
     # Write predictions
     file_name = "results/predictions_" + workload_name + ".csv"
     os.makedirs(os.path.dirname(file_name), exist_ok=True)
