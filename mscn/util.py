@@ -85,6 +85,10 @@ def get_min_max_vals(predicates, column_names):
 
 
 def normalize_data(val, column_name, column_min_max_vals):
+    print(f"The column name is {column_name}")
+    print(f"The value  is {val}")
+    if '"' in column_name:
+        column_name = column_name.replace('"', '')
     min_val = column_min_max_vals[column_name][0]
     max_val = column_min_max_vals[column_name][1]
     # print(f"The min value is {column_min_max_vals[column_name][0]}")
@@ -108,6 +112,21 @@ def normalize_data(val, column_name, column_min_max_vals):
 
 
 def normalize_labels(labels, min_val=None, max_val=None):
+    labels = np.array([np.log(float(l)) for l in labels])
+    if min_val is None:
+        min_val = labels.min()
+        print("min log(label): {}".format(min_val))
+    if max_val is None:
+        max_val = labels.max()
+        print("max log(label): {}".format(max_val))
+    labels_norm = (labels - min_val) / (max_val - min_val)
+    # Threshold labels
+    labels_norm = np.minimum(labels_norm, 1)
+    labels_norm = np.maximum(labels_norm, 0)
+    return labels_norm, min_val, max_val
+
+
+def normalize_templates(labels, min_val=None, max_val=None):
     labels = np.array([np.log(float(l)) for l in labels])
     if min_val is None:
         min_val = labels.min()

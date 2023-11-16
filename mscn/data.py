@@ -57,7 +57,7 @@ def load_data(file_name, num_materialized_samples):
 def load_and_encode_train_data(num_queries, num_materialized_samples):
     # file_name_queries = "data/train"
     # file_name_column_min_max_vals = "data/column_min_max_vals.csv"
-    file_name_queries = "data/sample"
+    file_name_queries = "data/updated_tpcds"
     file_name_column_min_max_vals = "data/tpcds_column_min_max_vals.csv"
 
     joins, predicates, tables, samples, label = load_data(file_name_queries, num_materialized_samples)
@@ -132,6 +132,8 @@ def load_and_encode_train_data(num_queries, num_materialized_samples):
     predicates_train = predicates_enc[:num_train]
     joins_train = joins_enc[:num_train]
     labels_train = label_norm[:num_train]
+
+    print("The label is labels_train", labels_train)
 
     samples_test = samples_enc[num_train:num_train + num_test]
     predicates_test = predicates_enc[num_train:num_train + num_test]
@@ -213,7 +215,6 @@ def get_train_datasets(num_queries, num_materialized_samples):
     
     # print("Exit 1")
     # print(train_data,labels_train,max_num_joins,max_num_predicates)
-
     train_dataset = make_dataset(*train_data, labels=labels_train, max_num_joins=max_num_joins,
                                  max_num_predicates=max_num_predicates)
 
