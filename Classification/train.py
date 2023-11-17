@@ -9,8 +9,10 @@ from torch.utils.data import DataLoader
 from sklearn.metrics import mean_absolute_percentage_error
 from mscn.util import *
 from mscn.data import get_train_datasets, load_data, make_dataset
-from mscn.model import SetConv
+#from mscn.model import SetConv
+from mscn.modelClass import SetConv
 import pdb;
+
 
 def unnormalize_torch(vals, min_val, max_val):
     vals = (vals * (max_val - min_val)) + min_val
@@ -73,7 +75,7 @@ def print_qerror(preds_unnorm, labels_unnorm):
     print("Mean: {}".format(np.mean(qerror)))
 
 
-def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_units, cuda):
+def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_units, cuda, num_classes):
     # Load training and validation data
     # num_materialized_samples = 1000
     num_materialized_samples = 0
@@ -90,7 +92,8 @@ def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_un
     print("The hid units {}".format(hid_units))
     print("The hid units {}".format(len(table2vec)))
     print("The hid units {}".format(num_materialized_samples))
-    model = SetConv(sample_feats, predicate_feats, join_feats, hid_units)
+    print("The number classes {}".format(num_classes))
+    model = SetConv(sample_feats, predicate_feats, join_feats, hid_units, num_classes)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
@@ -118,7 +121,8 @@ def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_un
 
             optimizer.zero_grad()
             outputs = model(samples, predicates, joins, sample_masks, predicate_masks, join_masks)
-            loss = qerror_loss(outputs, targets.float(), min_val, max_val)
+           # loss = qerror_loss(outputs, targets.float(), min_val, max_val)
+            loss = nn.CrossEntropyLoss()(outputs, targets.float())
             loss_total += loss.item()
             loss.backward()
             optimizer.step()
@@ -188,15 +192,17 @@ def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_un
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("testset", help="synthetic, scale, or job-light")
-    parser.add_argument("--queries", help="number of training queries (default: 10000)", type=int, default=10000)
-    parser.add_argument("--epochs", help="number of epochs (default: 10)", type=int, default=10)
-    parser.add_argument("--batch", help="batch size (default: 1024)", type=int, default=1024)
-    parser.add_argument("--hid", help="number of hidden units (default: 256)", type=int, default=256)
-    parser.add_argument("--cuda", help="use CUDA", action="store_true")
-    args = parser.parse_args()
-    train_and_predict(args.testset, args.queries, args.epochs, args.batch, args.hid, args.cuda)
+     parser = argparse.ArgumentParser()
+     parser.add_argument("testset", help="synthetic, scale, or job-light")
+     parser.add_argument("--queries", help="number of training queries (default: 10000)", type=int, default=10000)
+     parser.add_argument("--epochs", help="number of epochs (default: 10)", type=int, default=10)
+     parser.add_argument("--batch", help="batch size (default: 1024)", type=int, default=1024)
+     parser.add_argument("--hid", help="number of hidden units (default: 256)", type=int, default=256)
+     parser.add_argument("--class", help="number of classes (default: 10)", type=int, default=10)
+     parser.add_argument("--cuda", help="use CUDA", action="store_true")
+     args = parser.parse_args()
+     train_and_predict(args.testset, args.queries, args.epochs, args.batch, args.hid, arg.class, args.cuda)
+     #model = SetConv(sample_feats, predicate_feats, join_feats, hid_units, num_classes)
 
 
 if __name__ == "__main__":
