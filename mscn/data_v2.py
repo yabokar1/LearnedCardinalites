@@ -28,7 +28,7 @@ def load_data(file_name):
         joins.append(row['joins'].split(','))
         predicates.append(str(row['predicates']).split(','))
         label.append(row['template'])
-        print(f"The template is {row['template']}")
+        # print(f"The template is {row['template']}")
 
     # print("Loaded queries")
 
@@ -86,7 +86,7 @@ def load_and_encode_train_data(dataset_name):
     # Get feature encoding and proper normalization
     samples_enc = encode_samples(tables, samples, table2vec)
     predicates_enc, joins_enc = encode_data(predicates, joins, column_min_max_vals, column2vec, op2vec, join2vec)
-    label_norm, min_val, max_val = normalize_labels(label)
+    # label_norm, min_val, max_val = normalize_labels(label)
 
     # Split in training and validation samples
     num_train = int(num_queries * 0.9)
@@ -95,12 +95,14 @@ def load_and_encode_train_data(dataset_name):
     samples_train = samples_enc[:num_train]
     predicates_train = predicates_enc[:num_train]
     joins_train = joins_enc[:num_train]
-    labels_train = label_norm[:num_train]
+    # labels_train = label_norm[:num_train]
+    labels_train = label[:num_train]
 
     samples_test = samples_enc[num_train:num_train + num_test]
     predicates_test = predicates_enc[num_train:num_train + num_test]
     joins_test = joins_enc[num_train:num_train + num_test]
-    labels_test = label_norm[num_train:num_train + num_test]
+    # labels_test = label_norm[num_train:num_train + num_test]
+    labels_test = label[num_train:num_train + num_test]
 
     print("Number of training samples: {}".format(len(labels_train)))
     print("Number of validation samples: {}".format(len(labels_test)))
@@ -111,7 +113,8 @@ def load_and_encode_train_data(dataset_name):
     dicts = [table2vec, column2vec, op2vec, join2vec]
     train_data = [samples_train, predicates_train, joins_train]
     test_data = [samples_test, predicates_test, joins_test]
-    return dicts, column_min_max_vals, min_val, max_val, labels_train, labels_test, max_num_joins, max_num_predicates, train_data, test_data
+    # return dicts, column_min_max_vals, min_val, max_val, labels_train, labels_test, max_num_joins, max_num_predicates, train_data, test_data
+    return dicts, column_min_max_vals, labels_train, labels_test, max_num_joins, max_num_predicates, train_data, test_data
 
 
 def make_dataset(samples, predicates, joins, labels, max_num_joins, max_num_predicates):
@@ -172,11 +175,15 @@ def make_dataset(samples, predicates, joins, labels, max_num_joins, max_num_pred
 
 
 def get_train_datasets(dataset_name):
-    dicts, column_min_max_vals, min_val, max_val, labels_train, labels_test, max_num_joins, max_num_predicates, train_data, test_data = load_and_encode_train_data(dataset_name)
+    # dicts, column_min_max_vals, min_val, max_val, labels_train, labels_test, max_num_joins, max_num_predicates, train_data, test_data = load_and_encode_train_data(dataset_name)
+    dicts, column_min_max_vals, labels_train, labels_test, max_num_joins, max_num_predicates, train_data, test_data = load_and_encode_train_data(dataset_name)
+
     train_dataset = make_dataset(*train_data, labels=labels_train, max_num_joins=max_num_joins,
                                  max_num_predicates=max_num_predicates)
     print("Created TensorDataset for training data")
     test_dataset = make_dataset(*test_data, labels=labels_test, max_num_joins=max_num_joins,
                                 max_num_predicates=max_num_predicates)
     print("Created TensorDataset for validation data")
-    return dicts, column_min_max_vals, min_val, max_val, labels_train, labels_test, max_num_joins, max_num_predicates, train_dataset, test_dataset
+    # return dicts, column_min_max_vals, min_val, max_val, labels_train, labels_test, max_num_joins, max_num_predicates, train_dataset, test_dataset
+    return dicts, column_min_max_vals, labels_train, labels_test, max_num_joins, max_num_predicates, train_dataset, test_dataset
+
