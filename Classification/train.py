@@ -1,3 +1,7 @@
+#%%
+import os, sys
+os.chdir('../')
+sys.path.insert(0, os.getcwd())
 import argparse
 import time
 import os
@@ -13,7 +17,7 @@ from mscn.data import get_train_datasets, load_data, make_dataset
 from mscn.modelClass import SetConv
 import pdb;
 
-
+#%%
 def unnormalize_torch(vals, min_val, max_val):
     vals = (vals * (max_val - min_val)) + min_val
     return torch.exp(vals)
@@ -192,17 +196,17 @@ def train_and_predict(workload_name, num_queries, num_epochs, batch_size, hid_un
 
 
 def main():
-     parser = argparse.ArgumentParser()
-     parser.add_argument("testset", help="synthetic, scale, or job-light")
-     parser.add_argument("--queries", help="number of training queries (default: 10000)", type=int, default=10000)
-     parser.add_argument("--epochs", help="number of epochs (default: 10)", type=int, default=10)
-     parser.add_argument("--batch", help="batch size (default: 1024)", type=int, default=1024)
-     parser.add_argument("--hid", help="number of hidden units (default: 256)", type=int, default=256)
-     parser.add_argument("--class", help="number of classes (default: 10)", type=int, default=10)
-     parser.add_argument("--cuda", help="use CUDA", action="store_true")
-     args = parser.parse_args()
-     train_and_predict(args.testset, args.queries, args.epochs, args.batch, args.hid, arg.class, args.cuda)
-     #model = SetConv(sample_feats, predicate_feats, join_feats, hid_units, num_classes)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("testset", help="synthetic, scale, or job-light")
+    parser.add_argument("--queries", help="number of training queries (default: 10000)", type=int, default=10000)
+    parser.add_argument("--epochs", help="number of epochs (default: 10)", type=int, default=10)
+    parser.add_argument("--batch", help="batch size (default: 1024)", type=int, default=1024)
+    parser.add_argument("--hid", help="number of hidden units (default: 256)", type=int, default=256)
+    parser.add_argument("--Numclass", help="number of classes (default: 10)", type=int, default=10)
+    parser.add_argument("--cuda", help="use CUDA", action="store_true")
+    args = parser.parse_args()
+    train_and_predict(args.testset, args.queries, args.epochs, args.batch, args.hid, args.Numclass, args.cuda)
+    #model = SetConv(sample_feats, predicate_feats, join_feats, hid_units, num_classes)
 
 
 if __name__ == "__main__":
