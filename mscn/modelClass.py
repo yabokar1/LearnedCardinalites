@@ -56,4 +56,3 @@ class SetConv(nn.Module):
         hid = F.relu(self.out_mlp1(hid))
         out = self.out_mlp2(hid)  # Remove the sigmoid activation for multi-class
         return out
-        return out
