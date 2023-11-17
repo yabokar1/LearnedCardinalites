@@ -127,18 +127,8 @@ def normalize_labels(labels, min_val=None, max_val=None):
 
 
 def normalize_templates(labels, min_val=None, max_val=None):
-    labels = np.array([np.log(float(l)) for l in labels])
-    if min_val is None:
-        min_val = labels.min()
-        print("min log(label): {}".format(min_val))
-    if max_val is None:
-        max_val = labels.max()
-        print("max log(label): {}".format(max_val))
-    labels_norm = (labels - min_val) / (max_val - min_val)
-    # Threshold labels
-    labels_norm = np.minimum(labels_norm, 1)
-    labels_norm = np.maximum(labels_norm, 0)
-    return labels_norm, min_val, max_val
+    labels = np.array([np.log(int(l)) for l in labels])
+    return labels
 
 
 def unnormalize_labels(labels_norm, min_val, max_val):
