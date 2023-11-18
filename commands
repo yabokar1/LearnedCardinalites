@@ -1,3 +1,6 @@
 commands
 python train.py --queries 2260 --epochs 5 test_job
 python3 train.py --queries 99 --epochs 10 test_tpcds
+
+
+python train.py --queries 2260 --epochs 5 --Numclass 10 test_job
